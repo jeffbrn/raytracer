@@ -23,18 +23,29 @@ impl Tuple {
     pub fn x(&self) -> f32 {
         self.items[0]
     }
-
     pub fn y(&self) -> f32 {
         self.items[1]
     }
-
     pub fn z(&self) -> f32 {
         self.items[2]
     }
-
     pub fn w(&self) -> f32 {
         self.items[3]
     }
+
+    pub fn magnitude(&self) -> f32 {
+        (self.x().powf(2.0) + self.y().powf(2.0) + self.z().powf(2.0) ).sqrt()
+    }
+
+    pub fn normalize(&self) -> Tuple {
+        let mag = self.magnitude();
+        Tuple { items: [self.x()/mag,self.y()/mag,self.z()/mag,self.w()/mag] }
+    }
+
+    pub fn dot(&self, v: &Tuple) -> f32 {
+        self.x()*v.x() + self.y()*v.y() + self.z()*v.z() + self.w()*v.w()
+    }
+
 }
 
 impl PartialEq for Tuple {
@@ -112,9 +123,22 @@ impl MulAssign<f32> for Tuple {
     }
 }
 
+impl Mul for Tuple {
+    type Output = Tuple;
+
+    fn mul(self, rhs: Tuple) -> Tuple {
+        Tuple::vector(
+            self.y()*rhs.z() - self.z()*rhs.y(),
+            self.z()*rhs.x() - self.x()*rhs.z(),
+            self.x()*rhs.y() - self.y()*rhs.x()
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::data::Tuple;
+    use approx::assert_relative_eq;
 
     #[test]
     fn init() {
@@ -232,4 +256,44 @@ mod tests {
         assert_eq!(a, Tuple::init(0.5, -1.0, 1.5, -2.0));
     }
 
+    #[test]
+    fn magnitude() {
+        let v1 = Tuple::vector(1.0, 0.0, 0.0);
+        assert_eq!(v1.magnitude(), 1.0);
+        let v2 = Tuple::vector(0.0, 1.0, 0.0);
+        assert_eq!(v2.magnitude(), 1.0);
+        let v3 = Tuple::vector(0.0, 0.0, 1.0);
+        assert_eq!(v3.magnitude(), 1.0);
+        let v4 = Tuple::vector(1.0, 2.0, 3.0);
+        let expected : f32 = 14.0;
+        assert_eq!(v4.magnitude(), expected.sqrt());
+        let v5 = Tuple::vector(-1.0, -2.0, -3.0);
+        assert_eq!(v5.magnitude(), expected.sqrt());
+    }
+
+    #[test]
+    fn normalize() {
+        let v1 = Tuple::vector(4.0, 0.0, 0.0);
+        assert_eq!(v1.normalize(), Tuple::vector(1.0, 0.0, 0.0));
+        let v2 = Tuple::vector(1.0, 2.0, 3.0);
+        let mag = v2.magnitude();
+        let v3 = v2.normalize();
+        assert_eq!(v3, Tuple::vector(v2.x()/mag,v2.y()/mag,v2.z()/mag));
+        assert_relative_eq!(v3.magnitude(), 1.0, epsilon=1e-5);
+    }
+
+    #[test]
+    fn dot_product() {
+        let a = Tuple::vector(1.0, 2.0, 3.0);
+        let b = Tuple::vector(2.0, 3.0, 4.0);
+        assert_eq!(a.dot(&b), 20.0);
+    }
+
+    #[test]
+    fn cross_product() {
+        let a = Tuple::vector(1.0, 2.0, 3.0);
+        let b = Tuple::vector(2.0, 3.0, 4.0);
+        assert_eq!(a*b, Tuple::vector(-1.0, 2.0, -1.0));
+        assert_eq!(b*a, Tuple::vector(1.0, -2.0, 1.0));
+    }
 }
