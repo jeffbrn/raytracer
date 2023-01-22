@@ -1,7 +1,7 @@
-mod data;
+pub mod data;
+mod projectile;
 
 fn main() {
     println!("Hello, world!");
-    let v = data::Tuple::zero();
-    println!("{:?}", v);
+    projectile::run();
 }
