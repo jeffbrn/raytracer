@@ -1,4 +1,5 @@
 pub mod data;
+pub mod draw;
 mod projectile;
 
 fn main() {
