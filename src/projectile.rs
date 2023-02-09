@@ -1,4 +1,4 @@
-use crate::data::Tuple;
+use crate::data::tuple::Tuple;
 
 #[derive(Debug)]
 pub struct Projectile {
