@@ -1,5 +1,3 @@
-#[cfg(test)]
-
 use super::tuple::Tuple;
 use approx::assert_relative_eq;
 

@@ -1,5 +1,3 @@
-#[cfg(test)]
-
 use super::clr::Clr;
 use approx::{assert_relative_eq};
 

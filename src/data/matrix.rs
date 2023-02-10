@@ -1,4 +1,5 @@
 #[derive(Debug)]
+#[derive(Copy, Clone)]
 pub struct Matrix {
     side: i8,
     items: [f32; 16]
@@ -17,8 +18,22 @@ impl Matrix {
         self.items[idx]
     }
     pub fn side(&self) -> i8 { self.side }
+
     pub fn zero(side: i8) -> Matrix {
         Matrix { side, items: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] }
+    }
+    pub fn identity(side: i8) -> Matrix {
+        assert!(side >= 2 && side < 5);
+        match side {
+            2 => Matrix::matrix2(1.0, 0.0, 0.0, 1.0),
+            3 => Matrix::matrix3(1.0, 0.0, 0.0,
+                                 0.0, 1.0, 0.0,
+                                 0.0, 0.0, 1.0),
+            _ => Matrix::matrix4(1.0, 0.0, 0.0, 0.0,
+                                 0.0, 1.0, 0.0, 0.0,
+                                 0.0, 0.0, 1.0, 0.0,
+                                 0.0, 0.0, 0.0, 1.0)
+        }
     }
     pub fn matrix2(p11: f32, p12: f32, p21: f32, p22: f32) -> Matrix {
         Matrix { side: 2, items: [p11, p12, p21, p22, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] }
@@ -33,6 +48,7 @@ impl Matrix {
         Matrix { side: 4, items: [p11, p12, p13, p14, p21, p22, p23, p24, p31, p32, p33, p34, p41, p42, p43, p44] }
     }
     pub fn matrix(side: i8, array: &[f32]) -> Matrix {
+        assert!(side >= 2 && side < 5);
         match side {
             2 => Matrix::matrix2(array[0], array[1], array[2], array[3]),
             3 => Matrix::matrix3(array[0], array[1], array[2],
@@ -43,14 +59,5 @@ impl Matrix {
                                  array[8], array[9], array[10], array[11],
                                  array[12], array[13], array[14], array[15])
         }
-    }
-    pub fn row_mult(&self, row: i8, other: &Matrix, col: i8) -> f32 {
-        assert!(row < self.side && col < other.side);
-        assert_eq!(self.side, other.side);
-        let mut sum: f32 = 0.0;
-        for i in 0..self.side {
-            sum += self.e(row, i) * other.e(i, col);
-        }
-        sum
     }
 }
