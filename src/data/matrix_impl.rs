@@ -26,6 +26,65 @@ impl Matrix {
         let row4 = self.col_tuple(3);
         Matrix::matrix4_rows(&row1, &row2, &row3, &row4)
     }
+
+    pub fn determinant(&self) -> f32 {
+        match self.side() {
+            2 => self.e(0,0)*self.e(1,1) - self.e(0,1)*self.e(1,0),
+            _ => {
+                let mut sum = 0.0;
+                for col in 0..self.side() {
+                    sum += self.e(0, col)*self.cofactor(0, col);
+                }
+                sum
+            }
+        }
+    }
+    pub fn submatrix(&self, row: i8, col: i8) -> Matrix {
+        let mut vals:[f32;9] = [0.0; 9];
+        let mut i: usize = 0;
+        for r in 0..self.side() {
+            if r == row {
+                continue;
+            }
+            for c in 0..self.side() {
+                if c == col {
+                    continue;
+                }
+                vals[i] = self.e(r,c);
+                i += 1;
+            }
+        }
+        Matrix::matrix(self.side()-1, &vals)
+    }
+    pub fn minor(&self, row: i8, col: i8) -> f32 {
+        let sub = self.submatrix(row, col);
+        sub.determinant()
+    }
+    pub fn cofactor(&self, row: i8, col: i8) -> f32 {
+        let sub = self.submatrix(row, col);
+        let minor = sub.determinant();
+        match (row+col) % 2 {
+            0 => minor,
+            _ => -minor,
+        }
+    }
+    pub fn inverse(&self) -> Option<Matrix> {
+        let det = self.determinant();
+        if det == 0.0 {
+            return None;
+        }
+        let mut vals = [0.0; 16];
+        for row in 0..self.side() {
+            for col in 0..self.side() {
+                let c = self.cofactor(row, col);
+                vals[self.get_array_idx(col, row)] = c / det;
+            }
+        }
+        Some(Matrix::matrix(self.side(), &vals))
+    }
+    fn get_array_idx(&self, row: i8, col: i8) -> usize {
+        (row * self.side() + col) as usize
+    }
 }
 
 use std::cmp::{PartialEq, Eq};
