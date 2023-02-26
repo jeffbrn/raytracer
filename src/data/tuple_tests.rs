@@ -51,11 +51,11 @@ fn equality() {
 fn add_tuples() {
     let mut a1 = Tuple::point(3.0, -2.0, 5.0);
     let a2 = Tuple::vector(-2.0, 3.0, 1.0);
-    assert_eq!(a1+a2, Tuple::point(1.0, 1.0, 6.0));
+    assert_eq!(a1 + a2, Tuple::point(1.0, 1.0, 6.0));
     a1 += a2;
     assert_eq!(a1, Tuple::point(1.0, 1.0, 6.0));
     let v1 = Tuple::vector(1.0, -1.0, -4.5);
-    assert_eq!(a1+v1, Tuple::point(2.0, 0.0, 1.5));
+    assert_eq!(a1 + v1, Tuple::point(2.0, 0.0, 1.5));
     a1 += v1;
     assert_eq!(a1, Tuple::point(2.0, 0.0, 1.5));
 }
@@ -77,13 +77,13 @@ fn cannot_add_assign_points() {
 fn subtract_tuples() {
     let mut p1 = Tuple::point(3.0, 2.0, 1.0);
     let p2 = Tuple::point(5.0, 6.0, 7.0);
-    assert_eq!(p1-p2, Tuple::vector(-2.0, -4.0, -6.0));
+    assert_eq!(p1 - p2, Tuple::vector(-2.0, -4.0, -6.0));
     let v2 = Tuple::vector(5.0, 6.0, 7.0);
-    assert_eq!(p1-v2, Tuple::point(-2.0, -4.0, -6.0));
+    assert_eq!(p1 - v2, Tuple::point(-2.0, -4.0, -6.0));
     p1 -= p2;
     assert_eq!(p1, Tuple::vector(-2.0, -4.0, -6.0));
     let mut v1 = Tuple::vector(3.0, 2.0, 1.0);
-    assert_eq!(v1-v2, Tuple::vector(-2.0, -4.0, -6.0));
+    assert_eq!(v1 - v2, Tuple::vector(-2.0, -4.0, -6.0));
     v1 -= v2;
     assert_eq!(v1, Tuple::vector(-2.0, -4.0, -6.0));
 }
@@ -105,8 +105,8 @@ fn cannot_sub_mono_vp() {
 fn negate_tuples() {
     let zero = Tuple::zero();
     let v = Tuple::vector(1.0, -2.0, 3.0);
-    assert_eq!(zero-v, Tuple::vector(-1.0, 2.0, -3.0));
-    assert_eq!(-v, zero-v);
+    assert_eq!(zero - v, Tuple::vector(-1.0, 2.0, -3.0));
+    assert_eq!(-v, zero - v);
 }
 
 #[test]
@@ -126,7 +126,7 @@ fn magnitude() {
     let v3 = Tuple::vector(0.0, 0.0, 1.0);
     assert_eq!(v3.magnitude(), 1.0);
     let v4 = Tuple::vector(1.0, 2.0, 3.0);
-    let expected : f32 = 14.0;
+    let expected: f32 = 14.0;
     assert_eq!(v4.magnitude(), expected.sqrt());
     let v5 = Tuple::vector(-1.0, -2.0, -3.0);
     assert_eq!(v5.magnitude(), expected.sqrt());
@@ -139,8 +139,8 @@ fn normalize() {
     let v2 = Tuple::vector(1.0, 2.0, 3.0);
     let mag = v2.magnitude();
     let v3 = v2.normalize();
-    assert_eq!(v3, Tuple::vector(v2.x()/mag,v2.y()/mag,v2.z()/mag));
-    assert_relative_eq!(v3.magnitude(), 1.0, epsilon=1e-5);
+    assert_eq!(v3, Tuple::vector(v2.x() / mag, v2.y() / mag, v2.z() / mag));
+    assert_relative_eq!(v3.magnitude(), 1.0, epsilon = 1e-5);
 }
 
 #[test]
@@ -154,6 +154,6 @@ fn dot_product() {
 fn cross_product() {
     let a = Tuple::vector(1.0, 2.0, 3.0);
     let b = Tuple::vector(2.0, 3.0, 4.0);
-    assert_eq!(a*b, Tuple::vector(-1.0, 2.0, -1.0));
-    assert_eq!(b*a, Tuple::vector(1.0, -2.0, 1.0));
+    assert_eq!(a * b, Tuple::vector(-1.0, 2.0, -1.0));
+    assert_eq!(b * a, Tuple::vector(1.0, -2.0, 1.0));
 }

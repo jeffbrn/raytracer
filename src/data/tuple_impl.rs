@@ -1,16 +1,19 @@
 use super::tuple::Tuple;
 
-use std::cmp::{PartialEq, Eq};
+use std::cmp::{Eq, PartialEq};
 
 impl PartialEq for Tuple {
     fn eq(&self, other: &Self) -> bool {
-        self.x() == other.x() && self.y() == other.y() && self.z() == other.z() && self.w() == other.w()
+        self.x() == other.x()
+            && self.y() == other.y()
+            && self.z() == other.z()
+            && self.w() == other.w()
     }
 }
 
 impl Eq for Tuple {}
 
-use std::ops::{Add, Sub, Neg, Mul};
+use std::ops::{Add, Mul, Neg, Sub};
 
 impl Add for Tuple {
     type Output = Tuple;
@@ -18,7 +21,12 @@ impl Add for Tuple {
     fn add(self, other: Tuple) -> Tuple {
         let tp = self.w() + other.w();
         assert!(tp == 0.0 || tp == 1.0);
-        Tuple::init(self.x() + other.x(), self.y() + other.y(), self.z() + other.z(), tp)
+        Tuple::init(
+            self.x() + other.x(),
+            self.y() + other.y(),
+            self.z() + other.z(),
+            tp,
+        )
     }
 }
 
@@ -28,7 +36,12 @@ impl Sub for Tuple {
     fn sub(self, other: Tuple) -> Tuple {
         let tp = self.w() - other.w();
         assert!(tp == 0.0 || tp == 1.0);
-        Tuple::init(self.x() - other.x(), self.y() - other.y(), self.z() - other.z(), tp)
+        Tuple::init(
+            self.x() - other.x(),
+            self.y() - other.y(),
+            self.z() - other.z(),
+            tp,
+        )
     }
 }
 
@@ -44,7 +57,12 @@ impl Mul<f32> for Tuple {
     type Output = Tuple;
 
     fn mul(self, scaler: f32) -> Tuple {
-        Tuple::init(scaler*self.x(), scaler*self.y(), scaler*self.z(), scaler*self.w())
+        Tuple::init(
+            scaler * self.x(),
+            scaler * self.y(),
+            scaler * self.z(),
+            scaler * self.w(),
+        )
     }
 }
 
@@ -53,9 +71,9 @@ impl Mul for Tuple {
 
     fn mul(self, rhs: Tuple) -> Tuple {
         Tuple::vector(
-            self.y()*rhs.z() - self.z()*rhs.y(),
-            self.z()*rhs.x() - self.x()*rhs.z(),
-            self.x()*rhs.y() - self.y()*rhs.x()
+            self.y() * rhs.z() - self.z() * rhs.y(),
+            self.z() * rhs.x() - self.x() * rhs.z(),
+            self.x() * rhs.y() - self.y() * rhs.x(),
         )
     }
 }
