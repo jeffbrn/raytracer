@@ -118,7 +118,8 @@ impl PartialEq for Matrix {
         if self.side() != other.side() {
             return false;
         }
-        for i in 0..self.len() {
+        let len = self.side() * self.side();
+        for i in 0..len {
             if self.item(i) != other.item(i) {
                 return false;
             }

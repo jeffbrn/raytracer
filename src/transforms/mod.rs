@@ -63,4 +63,70 @@ impl Transform {
         inv?;
         Some(Transform { tm: inv.unwrap() })
     }
+    pub fn rotation_x(radians: f32) -> Transform {
+        Transform {
+            tm: Matrix::matrix4(
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                radians.cos(),
+                -radians.sin(),
+                0.0,
+                0.0,
+                radians.sin(),
+                radians.cos(),
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+            ),
+        }
+    }
+    pub fn rotation_y(radians: f32) -> Transform {
+        Transform {
+            tm: Matrix::matrix4(
+                radians.cos(),
+                0.0,
+                radians.sin(),
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                -radians.sin(),
+                0.0,
+                radians.cos(),
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+            ),
+        }
+    }
+    pub fn rotation_z(radians: f32) -> Transform {
+        Transform {
+            tm: Matrix::matrix4(
+                radians.cos(),
+                -radians.sin(),
+                0.0,
+                0.0,
+                radians.sin(),
+                radians.cos(),
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+            ),
+        }
+    }
 }
