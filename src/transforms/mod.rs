@@ -35,6 +35,10 @@ impl Transform {
             ),
         }
     }
+    pub fn trans2(trans: Matrix) -> Transform {
+        assert_eq!(trans.side(), 4);
+        Transform { tm: trans }
+    }
     pub fn scaling(pnt: Tuple) -> Transform {
         assert_eq!(pnt.w(), 1.0);
         Transform {
@@ -126,6 +130,13 @@ impl Transform {
                 0.0,
                 0.0,
                 1.0,
+            ),
+        }
+    }
+    pub fn shearing(dxy: f32, dxz: f32, dyx: f32, dyz: f32, dzx: f32, dzy: f32) -> Transform {
+        Transform {
+            tm: Matrix::matrix4(
+                1.0, dxy, dxz, 0.0, dyx, 1.0, dyz, 0.0, dzx, dzy, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
             ),
         }
     }

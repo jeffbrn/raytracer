@@ -104,3 +104,46 @@ fn z_axis_rotation() {
     let expected = Tuple::point(-1.0, 0.0, 0.0);
     result.assert_approx_eq(&expected);
 }
+
+#[test]
+fn shearing() {
+    let t1 = Transform::shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    let p = Tuple::point(2.0, 3.0, 4.0);
+    assert_eq!(t1 * p, Tuple::point(5.0, 3.0, 4.0));
+    let t1 = Transform::shearing(0.0, 1.0, 0.0, 0.0, 0.0, 0.0);
+    assert_eq!(t1 * p, Tuple::point(6.0, 3.0, 4.0));
+    let t1 = Transform::shearing(0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
+    assert_eq!(t1 * p, Tuple::point(2.0, 5.0, 4.0));
+    let t1 = Transform::shearing(0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+    assert_eq!(t1 * p, Tuple::point(2.0, 7.0, 4.0));
+    let t1 = Transform::shearing(0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    assert_eq!(t1 * p, Tuple::point(2.0, 3.0, 6.0));
+    let t1 = Transform::shearing(0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    assert_eq!(t1 * p, Tuple::point(2.0, 3.0, 7.0));
+}
+
+#[test]
+fn individual_multiple_transforms() {
+    let p = Tuple::point(1.0, 0.0, 1.0);
+    let a = Transform::rotation_x(std::f32::consts::PI / 2.0);
+    let b = Transform::scaling(Tuple::point(5.0, 5.0, 5.0));
+    let c = Transform::translation(Tuple::point(10.0, 5.0, 7.0));
+    // Apply rotation first
+    let p2 = a * p;
+    p2.assert_approx_eq(&Tuple::point(1.0, -1.0, 0.0));
+    // then apply scaling
+    let p3 = b * p2;
+    p3.assert_approx_eq(&Tuple::point(5.0, -5.0, 0.0));
+    let p4 = c * p3;
+    p4.assert_approx_eq(&Tuple::point(15.0, 0.0, 7.0));
+}
+
+#[test]
+fn chained_multiple_transform() {
+    let p = Tuple::point(1.0, 0.0, 1.0);
+    let a = Transform::rotation_x(std::f32::consts::PI / 2.0);
+    let b = Transform::scaling(Tuple::point(5.0, 5.0, 5.0));
+    let c = Transform::translation(Tuple::point(10.0, 5.0, 7.0));
+    let t = c * b * a;
+    assert_eq!(t * p, Tuple::point(15.0, 0.0, 7.0));
+}
