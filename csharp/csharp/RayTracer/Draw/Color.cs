@@ -1,4 +1,6 @@
-﻿namespace Research.RayTracer.Draw {
+﻿using System.Runtime.ConstrainedExecution;
+
+namespace Research.RayTracer.Draw {
 	public class Color : IEquatable<Color> {
 		// expected values between 0 and 1
 		private readonly float _r;
@@ -50,10 +52,16 @@
 		public (byte r, byte g, byte b, byte a) GetBytes() {
 			return (ConvertToByte(_r), ConvertToByte(_g), ConvertToByte(_b), 255);
 		}
+
+		public System.Drawing.Color GetSysColor() {
+			var (r, g, b, _) = GetBytes();
+			return System.Drawing.Color.FromArgb(r, g, b);
+		}
+
 		public static Color SetBytes(uint rgba) {
-			var b = (byte)((rgba & 0xff000000) >> 24);
+			var r = (byte)((rgba & 0xff000000) >> 24);
 			var g = (byte)((rgba & 0x00ff0000) >> 16);
-			var r = (byte)((rgba & 0x0000ff00) >> 8);
+			var b = (byte)((rgba & 0x0000ff00) >> 8);
 			return new Color((float)(r / 255.0), (float)(g / 255.0), (float)(b / 255.0));
 		}
 

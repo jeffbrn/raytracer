@@ -21,7 +21,7 @@ namespace Research.RayTracer.Draw {
 		}
 		public void Clear(Color fill) {
 			var (r, g, b, a) = fill.GetBytes();
-			uint pixel = (uint)(a << 24 | r << 16 | g << 8 | b);
+			uint pixel = (uint)(r << 24 | g << 16 | b << 8 | a);
 			for (int i = 0; i < _width * _height; i++) {
 				_buff[i] = pixel;
 			}
@@ -43,9 +43,8 @@ namespace Research.RayTracer.Draw {
 			Bitmap bmp = new(_width, _height);
 			for(int i = 0; i < _height; i++) {
 				for(int j = 0; j < _width; j++) {
-					int pos = i * _width + j;
-					System.Drawing.Color clr = System.Drawing.Color.FromArgb(unchecked((int)_buff[pos]));
-					bmp.SetPixel(j, i, clr);
+					var clr = this[i, j];
+					bmp.SetPixel(j, i, clr.GetSysColor());
 				}
 			}
 			bmp.Save(fname, ImageFormat.Png);
@@ -55,7 +54,7 @@ namespace Research.RayTracer.Draw {
 			if (x < 0 || x >= _width) throw new ArgumentOutOfRangeException(nameof(x));
 			if (y < 0 || y >= _height) throw new ArgumentOutOfRangeException(nameof(y));
 			int pos = y * _width + x;
-			uint pixel = (uint)(b << 24 | g << 16 | r << 8 | 255);
+			uint pixel = (uint)(r << 24 | g << 16 | b << 8 | b);
 			_buff[pos] = pixel;
 		}
 	}

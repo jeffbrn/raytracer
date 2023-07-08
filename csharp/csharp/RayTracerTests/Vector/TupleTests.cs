@@ -1,7 +1,7 @@
 ﻿using Research.RayTracer.Vector;
 
 namespace Research.RayTracer.Tests.Vector {
-	public class Tuples {
+	public class TupleTests {
 		[Fact]
 		public void IsAPoint() {
 			var a = RayTuple<float>.Point(4.3f, -4.2f, 3.1f);

@@ -1,7 +1,7 @@
 ﻿using Research.RayTracer.Draw;
 
 namespace Research.RayTracer.Tests.Draw {
-	public class Colors {
+	public class ColorTests {
 		[Fact]
 		public void NewColor() {
 			var c = new Color(-0.5f, 0.4f, 1.7f);
@@ -35,7 +35,7 @@ namespace Research.RayTracer.Tests.Draw {
 
 		[Fact]
 		public void SetBytes() {
-			uint val = 0xff804004;
+			uint val = 0x4080ffff;
 			var clr = Color.SetBytes(val);
 			Assert.Equal(0.25, clr.Red, 2);
 			Assert.Equal(0.5, clr.Green, 2);

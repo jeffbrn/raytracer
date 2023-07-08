@@ -7,7 +7,7 @@ namespace Research.RayTracer.Vector {
 		private readonly T _z;
 		private readonly T _w;
 
-		private RayTuple(T x, T y, T z, T w) {
+		public RayTuple(T x, T y, T z, T w) {
 			if(w != ZeroNum && w != OneNum) throw new ArgumentOutOfRangeException(nameof(w));
 			_x = x;
 			_y = y;
@@ -37,6 +37,14 @@ namespace Research.RayTracer.Vector {
 		public T DotProd(RayTuple<T> other) {
 			if (IsPoint || other.IsPoint) throw new InvalidOperationException("Dot Product is for vectors");
 			return _x*other._x + _y*other._y + _z*other._z;
+		}
+
+		public RayTuple<TResult> Cast<TResult>() where TResult : INumber<TResult> {
+			var x = (TResult)Convert.ChangeType(_x, typeof(TResult));
+			var y = (TResult)Convert.ChangeType(_y, typeof(TResult));
+			var z = (TResult)Convert.ChangeType(_z, typeof(TResult));
+			var w = (TResult)Convert.ChangeType(_w, typeof(TResult));
+			return new RayTuple<TResult>(x, y, z, w);
 		}
 
 		public bool Equals(RayTuple<T>? other) {

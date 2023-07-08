@@ -21,7 +21,7 @@ namespace Research {
 
 		static void Main() {
 			Canvas c = new(200, 100);
-			c.Clear(new Color(255, 0, 0));
+			c.Clear(new Color(0, 0, 1));
 			c.WriteFile("out.png");
 		}
 	}
