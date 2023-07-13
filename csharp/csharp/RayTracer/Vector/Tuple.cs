@@ -61,6 +61,7 @@ namespace Research.RayTracer.Vector {
 			new(x, y, z, RayTuple<TNum>.OneNum);
 		public static RayTuple<TNum> Vector<TNum>(TNum x, TNum y, TNum z) where TNum : INumber<TNum> =>
 			new(x, y, z, RayTuple<TNum>.ZeroNum);
+		public static RayTuple<T> Origin() => new(RayTuple<T>.ZeroNum, RayTuple<T>.ZeroNum, RayTuple<T>.ZeroNum, RayTuple<T>.OneNum);
 
 		public static RayTuple<T> operator +(RayTuple<T> lhs, RayTuple<T> rhs) => new(lhs._x + rhs._x, lhs._y + rhs._y, lhs._z + rhs._z, lhs._w + rhs._w);
 		public static RayTuple<T> operator -(RayTuple<T> lhs, RayTuple<T> rhs) => new(lhs._x - rhs._x, lhs._y - rhs._y, lhs._z - rhs._z, lhs._w - rhs._w);
